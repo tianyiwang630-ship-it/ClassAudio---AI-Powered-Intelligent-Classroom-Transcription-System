@@ -52,8 +52,7 @@ ClassAudio solves these pain points through AI technology, providing **real-time
 
 ### 📹 Demo Video
 
-<!-- Upload video to GitHub Issue comment, then replace URL below -->
-https://github.com/user-attachments/assets/YOUR_VIDEO_URL_HERE
+https://github.com/user-attachments/assets/5fdcb5b0-063b-40a9-8a43-d4ad83525436
 
 ---
 
