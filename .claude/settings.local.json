@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(ls:*)",
+      "Bash(python run.py:*)",
+      "Bash(where python python3 py)",
+      "Bash(D:Anacondapython.exe:*)",
+      "Bash(/d/Anaconda/python.exe:*)",
+      "Bash(conda env list:*)",
+      "Bash(/d/Anaconda/Scripts/conda.exe env list:*)",
+      "Bash(/d/Anaconda/envs/aiagent/python.exe:*)",
+      "Bash(netstat:*)",
+      "Bash(tasklist:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(D:/Anaconda/python.exe:*)",
+      "Bash(D:/Anaconda/envs/aiagent/python.exe:*)",
+      "Bash(./clear_cache.bat)",
+      "Bash(curl:*)"
+    ]
+  }
+}

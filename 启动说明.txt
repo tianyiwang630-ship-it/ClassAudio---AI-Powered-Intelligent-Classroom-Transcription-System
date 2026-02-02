@@ -1,0 +1,72 @@
+ClassAudio 启动说明
+===================
+
+【修复完成】导入错误已修复
+- 问题：DEFAULT_DEFAULT_PROF_WORDS 命名错误
+- 已修复为：DEFAULT_PROF_WORDS
+- 请确保运行过 clear_cache.bat 清理缓存
+
+【启动方法】
+
+方法 1：使用 bat 脚本（推荐）
+    双击运行：启动ClassAudio.bat
+    注意：首次启动加载模型需要 10-20 秒，请耐心等待
+
+方法 2：命令行启动
+    D:\Anaconda\envs\aiagent\python.exe run.py
+
+方法 3：直接启动后端
+    cd d:\files\demo\classaudio
+    D:\Anaconda\envs\aiagent\python.exe -m uvicorn src.api.server:app --host 0.0.0.0 --port 8000
+
+【启动检查】
+
+1. 检查后端是否启动成功：
+   打开浏览器访问：http://localhost:8000/health
+
+2. 检查端口占用：
+   netstat -ano | findstr ":8000"
+   如果看到 LISTENING，说明启动成功
+
+3. 查看日志：
+   python view_logs.py
+
+【常见问题】
+
+1. 启动超时
+   原因：首次加载 Whisper 模型需要时间（10-20秒）
+   解决：耐心等待，或者直接访问 http://localhost:8000
+
+2. 导入错误
+   原因：Python 缓存未清理
+   解决：运行 clear_cache.bat
+
+3. 端口占用
+   原因：上次未正常关闭
+   解决：
+   - 查找进程：netstat -ano | findstr ":8000"
+   - 结束进程：taskkill /PID <进程ID> /F
+
+【环境要求】
+
+- Python 环境：D:\Anaconda\envs\aiagent
+- Python 版本：3.10+
+- 必需依赖：已安装在 aiagent 环境中
+  - fastapi
+  - uvicorn
+  - faster-whisper
+  - pyaudio
+  - torch
+  - openai
+
+【确认启动成功】
+
+看到以下信息说明启动成功：
+- 后端：
+  INFO:     Uvicorn running on http://0.0.0.0:8000
+  All services initialized successfully!
+
+- 前端：
+  浏览器自动打开 http://localhost:8080
+
+【更新日期】2026-01-17

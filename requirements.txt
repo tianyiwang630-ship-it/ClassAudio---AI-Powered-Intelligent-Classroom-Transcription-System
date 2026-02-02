@@ -1,0 +1,19 @@
+# ClassAudio Requirements
+# 基础依赖
+numpy>=1.24.0
+sounddevice>=0.4.6
+
+# 语音识别
+faster-whisper>=0.10.0
+torch>=2.0.0
+
+# LLM API
+openai>=1.0.0
+
+# Web 框架
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+
+# 工具
+pydantic>=2.0.0

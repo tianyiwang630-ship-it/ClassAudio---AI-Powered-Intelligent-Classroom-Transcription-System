@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Models (几个GB的模型文件)
+data/models/
+data/vad/
+
+# Logs
+logs/
+data/logs/
+*.log
+
+# Environment variables (包含API keys)
+.env
+config_local.py
+
+# Output files
+data/*.json
+data/*.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Assets (keep demo videos)
+!assets/
+!assets/*.mp4
+!assets/*.gif

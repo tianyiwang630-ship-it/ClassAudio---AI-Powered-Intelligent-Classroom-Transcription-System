@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClassAudio - 实时课堂转写系统</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <span class="icon">📚</span>
+        <span class="brand-text">ClassAudio</span>
+      </div>
+      <div class="nav-status">
+        <span class="status-text" id="status-text">未连接</span>
+        <div class="status-dot" id="status-dot"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主容器 -->
+  <div class="container">
+    <!-- 课堂主题设置 -->
+    <div class="topic-panel" id="topic-panel">
+      <div class="topic-input-group">
+        <div class="topic-label">
+          <span class="topic-icon">📖</span>
+          <span>课堂主题</span>
+        </div>
+        <div class="topic-input-wrapper">
+          <input
+            type="text"
+            class="topic-input"
+            id="topic-input"
+            placeholder="请输入本节课的主题（例如：Transformer architecture、机器学习基础等）"
+            maxlength="200"
+          />
+          <button class="btn btn-topic" id="btn-set-topic">
+            <span class="btn-icon">✨</span>
+            <span>设置主题</span>
+          </button>
+        </div>
+        <div class="topic-hint" id="topic-hint">
+          设置主题后，系统将自动生成相关专业词汇，提高转写准确度
+        </div>
+      </div>
+    </div>
+
+    <!-- 控制面板 -->
+    <div class="control-panel">
+      <div class="control-group">
+        <button class="btn btn-primary btn-large" id="btn-start">
+          <span class="btn-icon">🎤</span>
+          <span>开始录音</span>
+        </button>
+        <button class="btn btn-danger btn-large" id="btn-stop" disabled>
+          <span class="btn-icon">⏹️</span>
+          <span>停止录音</span>
+        </button>
+      </div>
+      <div class="control-group">
+        <button class="btn btn-secondary" id="btn-refresh">
+          <span class="btn-icon">🔄</span>
+          <span>刷新笔记</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-clear">
+          <span class="btn-icon">🗑️</span>
+          <span>清空显示</span>
+        </button>
+        <button class="btn btn-secondary" id="btn-export">
+          <span class="btn-icon">💾</span>
+          <span>导出笔记</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="main-content" id="main-content">
+      <!-- 左侧：字幕区域 -->
+      <div class="left-panel">
+        <!-- 实时字幕 -->
+        <div class="panel panel-partial">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">🎙️</span>
+              <span>实时字幕 (Partial)</span>
+            </div>
+            <div class="panel-badge">实时更新</div>
+          </div>
+          <div class="panel-body">
+            <div class="partial-caption" id="partial-caption">
+              <div class="placeholder-text">等待语音输入...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 准确字幕 -->
+        <div class="panel panel-accurate">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">✅</span>
+              <span>准确字幕 (Accurate)</span>
+            </div>
+            <div class="panel-badge" id="accurate-count">0 条</div>
+          </div>
+          <div class="panel-body">
+            <div class="accurate-captions" id="accurate-captions">
+              <div class="empty-state">
+                <div class="empty-icon">📝</div>
+                <div class="empty-text">暂无字幕记录</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：结构化笔记 -->
+      <div class="right-panel">
+        <div class="panel panel-notes">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">📖</span>
+              <span>结构化笔记 (LLM 整理)</span>
+            </div>
+            <div class="panel-badge" id="notes-count">0 批次</div>
+          </div>
+          <div class="panel-body">
+            <div class="structured-notes" id="structured-notes">
+              <div class="empty-state">
+                <div class="empty-icon">🤖</div>
+                <div class="empty-text">等待 LLM 处理中...</div>
+                <div class="empty-hint">至少需要 4 条准确字幕才会开始处理</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 问答面板触发按钮 -->
+    <div class="qa-trigger" id="qa-trigger" title="打开问答面板">
+      <span class="qa-trigger-icon">💬</span>
+      <span class="qa-trigger-text">问答</span>
+    </div>
+
+    <!-- 问答面板 (右侧抽屉) -->
+    <div class="qa-drawer" id="qa-drawer">
+      <!-- 可拖动的调整柄 -->
+      <div class="qa-resize-handle" id="qa-resize-handle">
+        <!-- 收起按钮（在调整柄中间） -->
+        <button class="qa-collapse-btn" id="qa-collapse-btn" title="收起问答面板">
+          <span>➤</span>
+        </button>
+      </div>
+
+      <!-- 问答面板头部 -->
+      <div class="qa-drawer-header">
+        <div class="qa-drawer-title">
+          <span class="qa-drawer-icon">💬</span>
+          <span>课堂问答</span>
+        </div>
+        <div class="qa-drawer-actions">
+          <button class="qa-action-btn" id="qa-clear-btn" title="清空历史">
+            <span>🗑️</span>
+          </button>
+          <button class="qa-action-btn" id="qa-close-btn" title="收起">
+            <span>✕</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 问答历史记录 -->
+      <div class="qa-history" id="qa-history">
+        <div class="qa-empty-state">
+          <div class="qa-empty-icon">💭</div>
+          <div class="qa-empty-text">还没有提问记录</div>
+          <div class="qa-empty-hint">在下方输入框提问，AI 会基于课堂内容回答</div>
+        </div>
+      </div>
+
+      <!-- 问答输入区 -->
+      <div class="qa-input-container">
+        <div class="qa-input-wrapper">
+          <input
+            type="text"
+            class="qa-input"
+            id="qa-input"
+            placeholder="输入你的问题，例如：今天的作业是什么？"
+            maxlength="500"
+          />
+          <button class="qa-submit-btn" id="qa-submit-btn">
+            <span class="qa-submit-icon">➤</span>
+            <span class="qa-submit-text">提问</span>
+          </button>
+        </div>
+        <div class="qa-input-hint">
+          <span>💡 提示：AI 会基于当前课堂的转写内容回答问题</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 通知弹窗 -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- 加载脚本 -->
+  <script src="app.js"></script>
+</body>
+</html>
