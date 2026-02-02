@@ -52,7 +52,7 @@ ClassAudio 通过 AI 技术解决这些痛点，提供**实时、准确、结构
 
 ### 📹 演示视频
 
-https://github.com/user-attachments/assets/5fdcb5b0-063b-40a9-8a43-d4ad83525436
+https://github.com/user-attachments/assets/7c51e366-9626-45f5-8df3-32dde65cc7e0
 
 ---
 
